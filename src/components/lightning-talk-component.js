@@ -5,17 +5,15 @@ import Buttons from './buttons.js';
 class LightningTalk extends React.Component {
 
 
-// Need to change this so that the increment and decrement change the state of votes in App (super?). I assume that because it is a nested array it no longer works
+// send the id of the lightningTalk selected to the function called in App
    increment = (e) => {
-    this.setState({
-      lightningTalks: this.props.lightningTalk.votes + 1
-    })
+    const targetId = this.props.lightningTalk.id
+    this.props.incrementInApp(targetId)
   }
 
    decrement = (e) => {
-    this.setState({
-      lightningTalks: this.props.lightningTalk.votes - 1
-    })
+     const targetId = this.props.lightningTalk.id
+     this.props.decrementInApp(targetId)
   }
 
   // when the page renders (loads), pass title and description to parent function (App) as props
