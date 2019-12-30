@@ -1,14 +1,18 @@
 import React from 'react';
 import LightningTalk from './components/lightning-talk-component.js';
 import Form from './components/form.js';
+import Login from './components/login.js';
 import './App.css'
+
 
 // initialized state of App to hold an empty lightningTalks compoennt. componentDidMount sets its state depends
 class App extends React.Component {
   constructor(props) {
-    super();
+    super(props);
     this.state = {
-      lightningTalks: []
+      lightningTalks: [],
+      username: "",
+      loggedIn: false
     };
   }
 
@@ -47,6 +51,14 @@ class App extends React.Component {
       });
   }
 
+  login = (username) => {
+    this.setState({
+      loggedIn: true,
+      username: username
+    });
+    console.log(this.state.username)
+  }
+
 // increments/decrements the votes in an object of lightningTalks
   incrementInApp = (id) => {
     // creates a new array based off current state of lightningTalks
@@ -81,12 +93,17 @@ class App extends React.Component {
   this.setState({lightningTalks: nextLightningTalks})
   }
 
+  showTalksAndForm(props) {
+
+  }
+
   // now the state of lightning talks depends on what is on the API. Below there is a loop(.map) which is set by componentDidMount
   render() {
 
     return (
       <div className="container">
         <h1>Lightning Talks!</h1>
+          <Login login={this.login}/>
             <div className="talks">
               {this.state.lightningTalks.votes}
                 {this.state.lightningTalks.map((talk) => {

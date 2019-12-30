@@ -1,12 +1,15 @@
 import React from "react"
+import './login.css';
 
-class Login extends React.component {
+class Login extends React.Component {
   constructor(props) {
+    super(props);
     this.loginSubmit = this.loginSubmit.bind(this)
       this.state = {
         username: '',
         password: '',
-        errors: []
+        errors: [],
+        pwdStrength: null
       }
   }
 
@@ -34,21 +37,29 @@ class Login extends React.component {
    onPasswordChange= (e) => {
     this.setState({ password: e.target.value })
     this.clearValidationErr("password");
-   }
+    // set state of password strength based on length. Render these as CSS below
+    if (e.target.value.length <= 8) {
+      this.setState({ pwdStrength: "pwd-weak"})
+    } if (e.target.value.length > 8) {
+      this.setState({ pwdStrength: "pwd-medium" })
+    } if (e.target.value.length > 12) {
+      this.setState({ pwdStrength: "pwd-strong" })
+    }
+  }
 
  // on submit, time is logged (new Date) and state of title and description is changed
    loginSubmit= (e) => {
     e.preventDefault()
 
-      if(this.state.username == "") {
+      if(this.state.username === "") {
         this.showValidationErr("username", "Username cannot be empty")
-      } if (this.state.password == "") {
+      } if (this.state.password === "") {
         this.showValidationErr("password", "Password cannot be empty")
       }
 
 
     const username = this.state.username
-    const password = this.state.password
+    this.props.login(username)
     // call onSubmit in LightningTalk so that new talk is added from form
 
     // this.props.postInApp(usernamePassword)
@@ -59,9 +70,9 @@ class Login extends React.component {
     let passwordErr = null;
 
     for(let err of this.state.errors) {
-      if(err.e == "username") {
+      if(err.e === "username") {
         usernameErr = err.msg
-      } if (err.e == "password") {
+      } if (err.e === "password") {
         passwordErr = err.msg
       }
     }
@@ -73,7 +84,7 @@ class Login extends React.component {
           <input className="input-username"
           placeholder="enter your username"
           value={this.state.username}
-          onChange={e => this.onUsernameChange.bind(this)}
+          onChange={this.onUsernameChange}
           />
           <small className = "danger-error"> { usernameErr ? usernameErr : "" }</small>
         </label>
@@ -83,14 +94,21 @@ class Login extends React.component {
           <input className="input-password"
           placeholder="enter your password"
           value={this.state.password}
-          onChange={e => this.onPasswordChange.bind(this)}
+          onChange={this.onPasswordChange}
+          type="password"
           />
-          <small className = "danger-error"> { passwordErr ? passwordErr : "" }</small>
-        {/*when the button is clicked, call the onSubmit function above. E (event) is passed into onSubmit function (above)*/}
+          <small className="danger-error"> { passwordErr ? passwordErr : "" }</small>
+          {this.state.password && <div className="password-state">
+            <div
+              className={"pwd " + (this.state.pwdStrength)}></div>
+          </div>}
+        {/*when the button is clicked, call the loginSubmit function above. E (event) is passed into loginSubmit function (above)*/}
         </label>
         <br />
-        <button onClick={e => this.loginSubmit(e)}>Submit Talk</button>
+        <button onClick={e => this.loginSubmit(e)}>Login</button>
       </form>
       );
     }
 }
+
+export default Login;

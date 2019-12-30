@@ -1,1 +1,26 @@
-login.css
+.password-state {
+  padding-left: 6px;
+  margin-top: 3px;
+  height:5px;
+}
+
+.pwd {
+  width: 100%;
+  height: 100%;
+  margin-top: 10px;
+}
+
+.pwd-weak {
+  background-color: red;
+  width: 30%;
+}
+
+.pwd-medium {
+  background-color: blue;
+  width: 60%;
+}
+
+.pwd-strong {
+  background-color: green;
+  width: 100%;
+}
