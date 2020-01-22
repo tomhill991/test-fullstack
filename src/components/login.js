@@ -9,7 +9,8 @@ class Login extends React.Component {
         username: '',
         password: '',
         errors: [],
-        pwdStrength: null
+        pwdStrength: null,
+        loggedIn: false
       }
   }
 
@@ -57,13 +58,22 @@ class Login extends React.Component {
         this.showValidationErr("password", "Password cannot be empty")
       }
 
+    if(this.state.username !== null && this.state.password !== null) {
+      this.setState({ loggedIn: true })
+    }
 
-    const username = this.state.username
-    this.props.login(username)
-    // call onSubmit in LightningTalk so that new talk is added from form
+    if (this.state.loggedIn === true) {
+      const username = this.state.username
+      this.props.login(username)
+    }
 
-    // this.props.postInApp(usernamePassword)
    }
+
+    register=(e) => {
+
+    }
+
+
    render() {
 
     let usernameErr = null;
@@ -76,6 +86,7 @@ class Login extends React.Component {
         passwordErr = err.msg
       }
     }
+
 
     return (
       <form className="form-container">
@@ -106,6 +117,8 @@ class Login extends React.Component {
         </label>
         <br />
         <button onClick={e => this.loginSubmit(e)}>Login</button>
+        <small>No login?</small>
+        <button onClick={e => this.register(e)}>Register</button>
       </form>
       );
     }

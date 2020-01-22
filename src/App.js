@@ -11,7 +11,7 @@ class App extends React.Component {
     super(props);
     this.state = {
       lightningTalks: [],
-      username: "",
+      username: null,
       loggedIn: false
     };
   }
@@ -52,11 +52,21 @@ class App extends React.Component {
   }
 
   login = (username) => {
+    console.log('username', username)
+    console.log('username state', this.state.username)
+
     this.setState({
       loggedIn: true,
       username: username
+    }, () => {
+   return <div className="talks">
+      {this.state.lightningTalks.votes}
+        {this.state.lightningTalks.map((talk) => {
+          return <LightningTalk lightningTalk={talk} incrementInApp={this.incrementInApp} decrementInApp={this.decrementInApp}/>
+                })}
+            </div>
     });
-    console.log(this.state.username)
+
   }
 
 // increments/decrements the votes in an object of lightningTalks
@@ -93,25 +103,28 @@ class App extends React.Component {
   this.setState({lightningTalks: nextLightningTalks})
   }
 
-  showTalksAndForm(props) {
+  lightningTalkRender = () => {
+    return <div className="talks">
+      {this.state.lightningTalks.votes}
+        {this.state.lightningTalks.map((talk) => {
+          return <LightningTalk lightningTalk={talk} incrementInApp={this.incrementInApp} decrementInApp={this.decrementInApp}/>
+                })}
+            </div>
+  }
 
+  formRender = () => {
+    return <Form postInApp={this.postInApp}/>
   }
 
   // now the state of lightning talks depends on what is on the API. Below there is a loop(.map) which is set by componentDidMount
   render() {
-
     return (
       <div className="container">
         <h1>Lightning Talks!</h1>
-          <Login login={this.login}/>
-            <div className="talks">
-              {this.state.lightningTalks.votes}
-                {this.state.lightningTalks.map((talk) => {
-                  return <LightningTalk lightningTalk={talk} incrementInApp={this.incrementInApp} decrementInApp={this.decrementInApp}/>
-                })}
-            </div>
-          <h3 className="form-header"> Submit your talk</h3>
-        <Form postInApp={this.postInApp}/>
+          {this.state.loggedIn ? null : <Login login={(username) => this.login(username)} /> }
+          {this.state.loggedIn ? this.lightningTalkRender() : null}
+          {this.state.loggedIn ? <h3 className="form-header"> Submit your talk</h3> : null }
+          {this.state.loggedIn ? this.formRender() : null}
       </div>
     )
   }
