@@ -117,8 +117,8 @@ class Login extends React.Component {
         </label>
         <br />
         <button onClick={e => this.loginSubmit(e)}>Login</button>
-        <small>No login?</small>
-        <button onClick={e => this.register(e)}>Register</button>
+  {/*      <small>No login?</small>
+        <button onClick={e => this.register(e)}>Register</button>*/}
       </form>
       );
     }
